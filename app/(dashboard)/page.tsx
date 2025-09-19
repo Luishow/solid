@@ -37,6 +37,7 @@ import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { mockReimbursements, getReimbursementStats } from "@/data/reimbursements";
+const ChartCard = dynamic(() => import("@/components/dashboard/chart-card").then(m => m.ChartCard), { ssr: false });
 
 export default function DashboardPage() {
   const { people, stats, loading } = usePeople();
@@ -45,7 +46,6 @@ export default function DashboardPage() {
   
   // Stats de reembolsos
   const reimbursementStats = useMemo(() => getReimbursementStats(mockReimbursements), []);
-  const ChartCard = useMemo(() => dynamic(() => import("@/components/dashboard/chart-card").then(m => m.ChartCard), { ssr: false }), []);
   
   // Atividades recentes combinadas
   const recentActivities = useMemo(() => {
