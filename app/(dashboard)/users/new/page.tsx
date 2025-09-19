@@ -11,13 +11,20 @@ import { toast } from "sonner";
 import { UserPlus, Mail, Shield, Lock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useUsers } from "@/hooks/use-users";
-import { games } from "@/data/users";
+import { AppUser, games } from "@/data/users";
 
 export default function CreateUserPage() {
   const router = useRouter();
   const { addUser } = useUsers();
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
+  type FormState = {
+    name: string;
+    email: string;
+    role: AppUser["role"];
+    password: string;
+    game: string;
+  };
+  const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
     role: "administrativo",
@@ -25,7 +32,7 @@ export default function CreateUserPage() {
     game: "",
   });
 
-  const handleChange = (field: keyof typeof form, value: string) => {
+  const handleChange = <K extends keyof FormState>(field: K, value: FormState[K]) => {
     setForm(prev => ({ ...prev, [field]: value }));
   };
 
@@ -104,7 +111,7 @@ export default function CreateUserPage() {
                 <Label htmlFor="role">Cargo</Label>
                 <div className="relative">
                   <Shield className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-yellow-400" />
-                  <Select value={form.role} onValueChange={v => handleChange("role", v)}>
+                  <Select value={form.role} onValueChange={v => handleChange("role", v as FormState["role"]) }>
                     <SelectTrigger className="pl-10">
                       <SelectValue placeholder="Selecione o cargo" />
                     </SelectTrigger>
