@@ -5,12 +5,11 @@ export const dynamic = "force-dynamic";
 import { usePeople } from "@/hooks/use-people";
 import { useEmployees } from "@/hooks/use-employees";
 import { KpiCard } from "@/components/dashboard/kpi-card";
-import dynamicImport from "next/dynamic";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-// Progress usa Radix; carregar apenas no client para evitar SSR
+import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { 
   Users, 
@@ -39,8 +38,20 @@ import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { mockReimbursements, getReimbursementStats } from "@/data/reimbursements";
-const ChartCard = dynamicImport(() => import("@/components/dashboard/chart-card"), { ssr: false });
-const ProgressBar = dynamicImport(() => import("@/components/ui/progress").then(m => m.Progress), { ssr: false });
+// ChartCard temporariamente removido para debug
+const ChartCard = ({ title, description, ...props }: { title: string; description?: string; [key: string]: any }) => (
+  <Card>
+    <CardHeader>
+      <h3 className="font-semibold">{title}</h3>
+      {description && <p className="text-sm text-muted-foreground">{description}</p>}
+    </CardHeader>
+    <CardContent>
+      <div className="h-64 flex items-center justify-center text-muted-foreground">
+        Gráfico temporariamente desabilitado
+      </div>
+    </CardContent>
+  </Card>
+);
 
 export default function DashboardPage() {
   const { people, stats, loading } = usePeople();
@@ -438,7 +449,7 @@ export default function DashboardPage() {
                     {Math.round((employeeStats.active / employeeStats.total) * 100)}%
                   </span>
                 </div>
-                <ProgressBar value={(employeeStats.active / employeeStats.total) * 100} className="h-2" />
+                <Progress value={(employeeStats.active / employeeStats.total) * 100} className="h-2" />
               </div>
 
               <div>
@@ -448,7 +459,7 @@ export default function DashboardPage() {
                     {Math.round((reimbursementStats.approved / reimbursementStats.total) * 100)}%
                   </span>
                 </div>
-                <ProgressBar value={(reimbursementStats.approved / reimbursementStats.total) * 100} className="h-2" />
+                <Progress value={(reimbursementStats.approved / reimbursementStats.total) * 100} className="h-2" />
               </div>
 
               <div>
@@ -458,7 +469,7 @@ export default function DashboardPage() {
                     {((employeeStats.avgRating / 5) * 100).toFixed(0)}%
                   </span>
                 </div>
-                <ProgressBar value={(employeeStats.avgRating / 5) * 100} className="h-2" />
+                <Progress value={(employeeStats.avgRating / 5) * 100} className="h-2" />
               </div>
             </div>
 
