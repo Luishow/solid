@@ -1,9 +1,11 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { usePeople } from "@/hooks/use-people";
 import { useEmployees } from "@/hooks/use-employees";
 import { KpiCard } from "@/components/dashboard/kpi-card";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -37,8 +39,8 @@ import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { mockReimbursements, getReimbursementStats } from "@/data/reimbursements";
-const ChartCard = dynamic(() => import("@/components/dashboard/chart-card"), { ssr: false });
-const ProgressBar = dynamic(() => import("@/components/ui/progress").then(m => m.Progress), { ssr: false });
+const ChartCard = dynamicImport(() => import("@/components/dashboard/chart-card"), { ssr: false });
+const ProgressBar = dynamicImport(() => import("@/components/ui/progress").then(m => m.Progress), { ssr: false });
 
 export default function DashboardPage() {
   const { people, stats, loading } = usePeople();
