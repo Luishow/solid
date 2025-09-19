@@ -119,3 +119,5 @@ export function ChartCard({ title, description, data, type, className }: ChartCa
     </Card>
   );
 }
+
+export default ChartCard;

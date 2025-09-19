@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+// Progress usa Radix; carregar apenas no client para evitar SSR
 import { Separator } from "@/components/ui/separator";
 import { 
   Users, 
@@ -37,7 +37,8 @@ import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { mockReimbursements, getReimbursementStats } from "@/data/reimbursements";
-const ChartCard = dynamic(() => import("@/components/dashboard/chart-card").then(m => m.ChartCard), { ssr: false });
+const ChartCard = dynamic(() => import("@/components/dashboard/chart-card"), { ssr: false });
+const ProgressBar = dynamic(() => import("@/components/ui/progress").then(m => m.Progress), { ssr: false });
 
 export default function DashboardPage() {
   const { people, stats, loading } = usePeople();
@@ -435,10 +436,7 @@ export default function DashboardPage() {
                     {Math.round((employeeStats.active / employeeStats.total) * 100)}%
                   </span>
                 </div>
-                <Progress 
-                  value={(employeeStats.active / employeeStats.total) * 100} 
-                  className="h-2"
-                />
+                <ProgressBar value={(employeeStats.active / employeeStats.total) * 100} className="h-2" />
               </div>
 
               <div>
@@ -448,10 +446,7 @@ export default function DashboardPage() {
                     {Math.round((reimbursementStats.approved / reimbursementStats.total) * 100)}%
                   </span>
                 </div>
-                <Progress 
-                  value={(reimbursementStats.approved / reimbursementStats.total) * 100} 
-                  className="h-2"
-                />
+                <ProgressBar value={(reimbursementStats.approved / reimbursementStats.total) * 100} className="h-2" />
               </div>
 
               <div>
@@ -461,10 +456,7 @@ export default function DashboardPage() {
                     {((employeeStats.avgRating / 5) * 100).toFixed(0)}%
                   </span>
                 </div>
-                <Progress 
-                  value={(employeeStats.avgRating / 5) * 100} 
-                  className="h-2"
-                />
+                <ProgressBar value={(employeeStats.avgRating / 5) * 100} className="h-2" />
               </div>
             </div>
 
