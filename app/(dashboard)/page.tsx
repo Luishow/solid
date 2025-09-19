@@ -3,7 +3,7 @@
 import { usePeople } from "@/hooks/use-people";
 import { useEmployees } from "@/hooks/use-employees";
 import { KpiCard } from "@/components/dashboard/kpi-card";
-import { ChartCard } from "@/components/dashboard/chart-card";
+import dynamic from "next/dynamic";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +45,7 @@ export default function DashboardPage() {
   
   // Stats de reembolsos
   const reimbursementStats = useMemo(() => getReimbursementStats(mockReimbursements), []);
+  const ChartCard = useMemo(() => dynamic(() => import("@/components/dashboard/chart-card").then(m => m.ChartCard), { ssr: false }), []);
   
   // Atividades recentes combinadas
   const recentActivities = useMemo(() => {
