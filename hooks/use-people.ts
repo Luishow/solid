@@ -5,6 +5,13 @@ import { Person, mockPeople } from "@/data/people";
 import { saveToStorage, loadFromStorage } from "@/lib/storage";
 import { toast } from "sonner";
 
+const generateId = () => {
+  if (typeof window !== 'undefined' && window.crypto && window.crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return Date.now().toString() + Math.random().toString(36).substring(2);
+};
+
 export function usePeople() {
   const [people, setPeople] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,11 +31,11 @@ export function usePeople() {
   const addPerson = (person: Omit<Person, "id" | "createdAt">) => {
     const newPerson: Person = {
       ...person,
-      id: crypto.randomUUID(),
+      id: generateId(),
       createdAt: new Date().toISOString(),
       history: [
         {
-          id: crypto.randomUUID(),
+          id: generateId(),
           date: new Date().toISOString(),
           action: "Cadastro criado",
           user: "Admin"
@@ -49,7 +56,7 @@ export function usePeople() {
             history: [
               ...(person.history || []),
               {
-                id: crypto.randomUUID(),
+                id: generateId(),
                 date: new Date().toISOString(),
                 action: "Dados atualizados",
                 user: "Admin"
@@ -75,7 +82,7 @@ export function usePeople() {
             history: [
               ...(person.history || []),
               {
-                id: crypto.randomUUID(),
+                id: generateId(),
                 date: new Date().toISOString(),
                 action: `Status alterado para ${status}`,
                 user: "Admin"

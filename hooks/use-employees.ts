@@ -14,12 +14,16 @@ export function useEmployees() {
       
       // Simula uma chamada de API
       setTimeout(() => {
-        const savedEmployees = localStorage.getItem("employees");
-        if (savedEmployees) {
-          setEmployees(JSON.parse(savedEmployees));
+        if (typeof window !== 'undefined') {
+          const savedEmployees = localStorage.getItem("employees");
+          if (savedEmployees) {
+            setEmployees(JSON.parse(savedEmployees));
+          } else {
+            setEmployees(mockEmployees);
+            localStorage.setItem("employees", JSON.stringify(mockEmployees));
+          }
         } else {
           setEmployees(mockEmployees);
-          localStorage.setItem("employees", JSON.stringify(mockEmployees));
         }
         setLoading(false);
       }, 500);
@@ -29,7 +33,9 @@ export function useEmployees() {
   }, []);
 
   const saveEmployees = (newEmployees: Employee[]) => {
-    localStorage.setItem("employees", JSON.stringify(newEmployees));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("employees", JSON.stringify(newEmployees));
+    }
   };
 
   const addEmployee = (employee: Omit<Employee, "id" | "createdAt" | "updatedAt">) => {

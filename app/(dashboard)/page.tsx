@@ -39,19 +39,21 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { mockReimbursements, getReimbursementStats } from "@/data/reimbursements";
 // ChartCard temporariamente removido para debug
-const ChartCard = ({ title, description, ...props }: { title: string; description?: string; [key: string]: any }) => (
-  <Card>
-    <CardHeader>
-      <h3 className="font-semibold">{title}</h3>
-      {description && <p className="text-sm text-muted-foreground">{description}</p>}
-    </CardHeader>
-    <CardContent>
-      <div className="h-64 flex items-center justify-center text-muted-foreground">
-        Gráfico temporariamente desabilitado
-      </div>
-    </CardContent>
-  </Card>
-);
+const ChartCard = ({ title, description, ...props }: { title: string; description?: string; [key: string]: any }) => {
+  return (
+    <Card>
+      <CardHeader>
+        <h3 className="font-semibold">{title}</h3>
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+      </CardHeader>
+      <CardContent>
+        <div className="h-64 flex items-center justify-center text-muted-foreground">
+          Gráfico temporariamente desabilitado
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 export default function DashboardPage() {
   const { people, stats, loading } = usePeople();
