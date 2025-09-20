@@ -6,8 +6,8 @@ import { saveToStorage, loadFromStorage } from "@/lib/storage";
 import { toast } from "sonner";
 
 const generateId = () => {
-  if (typeof window !== 'undefined' && window.crypto && window.crypto.randomUUID) {
-    return crypto.randomUUID();
+  if (typeof window !== 'undefined' && window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
   }
   return Date.now().toString() + Math.random().toString(36).substring(2);
 };
